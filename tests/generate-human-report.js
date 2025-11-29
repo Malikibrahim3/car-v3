@@ -1,0 +1,217 @@
+/**
+ * Generate Human-Readable Audit Report
+ * Converts JSON audit results into a brutal, honest markdown report
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+function generateHumanReport() {
+  const auditPath = 'tests/audit-reports/MASTER-AUDIT-REPORT.json';
+  
+  if (!fs.existsSync(auditPath)) {
+    console.error('❌ Audit report not found. Run the audit first.');
+    return;
+  }
+  
+  const audit = JSON.parse(fs.readFileSync(auditPath, 'utf8'));
+  
+  let report = `# 🔥 BRUTAL FULL-APP DESIGN & UX AUDIT REPORT
+
+**Generated:** ${new Date(audit.timestamp).toLocaleString()}  
+**Total Issues Found:** ${audit.executiveSummary.totalIssues}  
+**Verdict:** ${audit.executiveSummary.verdict}
+
+---
+
+## 📋 EXECUTIVE SUMMARY
+
+### Overall Impression
+${audit.executiveSummary.overallImpression}
+
+${audit.executiveSummary.verdict}
+
+### Severity Breakdown
+- 🚨 **CRITICAL:** ${audit.executiveSummary.severityCounts.critical} issues
+- ⚠️ **HIGH:** ${audit.executiveSummary.severityCounts.high} issues
+- ⚡ **MEDIUM:** ${audit.executiveSummary.severityCounts.medium} issues
+- 📝 **LOW:** ${audit.executiveSummary.severityCounts.low} issues
+
+---
+
+## 🚨 TOP 10 CRITICAL ISSUES
+
+${audit.executiveSummary.topIssues.map((issue, i) => `${i + 1}. ${issue}`).join('\n')}
+
+---
+
+## 💀 TOP 10 REASONS THIS APP LACKS SOUL
+
+${audit.executiveSummary.reasonsLacksSoul.map(reason => `${reason}`).join('\n\n')}
+
+---
+
+## 🎯 BENCHMARK COMPARISON
+
+### vs. Linear
+${audit.executiveSummary.benchmarkComparison.linear}
+
+### vs. Notion
+${audit.executiveSummary.benchmarkComparison.notion}
+
+### vs. Stripe Dashboard
+${audit.executiveSummary.benchmarkComparison.stripe}
+
+### vs. Figma
+${audit.executiveSummary.benchmarkComparison.figma}
+
+---
+
+## 🤖 AI-BUILT DETECTION RESULTS
+
+### Visual AI Signals
+${formatAISignals(audit.aiLookIssues.visual)}
+
+### UX Flow AI Signals
+${formatAISignals(audit.aiLookIssues.ux)}
+
+### Behavioral AI Signals
+${formatAISignals(audit.aiLookIssues.behavioral)}
+
+### Communication AI Signals
+${formatAISignals(audit.aiLookIssues.communication)}
+
+### Overall Product Feel
+${formatAISignals(audit.aiLookIssues.overall)}
+
+---
+
+## 🌍 GLOBAL ISSUES
+
+${audit.globalIssues.map(issue => `
+### ${issue.category} [${issue.severity}]
+
+**Issue:** ${issue.issue}  
+**Impact:** ${issue.impact}  
+**Fix:** ${issue.fix}
+`).join('\n')}
+
+---
+
+## 📄 PAGE-BY-PAGE BREAKDOWN
+
+${audit.pageAudits.map(page => `
+### ${page.name}
+**Description:** ${page.description}
+
+**Metrics:**
+- Unique Spacing Values: ${page.metrics.spacing?.totalUniqueValues || 'N/A'}
+- Font Sizes: ${page.metrics.typography?.uniqueFontSizes?.length || 'N/A'}
+- Colors: ${page.metrics.colors?.totalUniqueColors || 'N/A'}
+- Shadows: ${page.metrics.shadows?.count || 'N/A'}
+- Border Radii: ${page.metrics.borderRadius?.count || 'N/A'}
+
+**Issues Found:** ${page.issues.length}
+
+${page.issues.map(issue => `
+- **[${issue.severity.toUpperCase()}]** ${issue.category}: ${issue.issue}
+`).join('')}
+`).join('\n---\n')}
+
+---
+
+## 🎯 ACTIONABLE RECOMMENDATIONS
+
+### 🚀 QUICK WINS (Do Today)
+
+${audit.recommendations.quickWins.map((rec, i) => `
+#### ${i + 1}. ${rec.task}
+- **Effort:** ${rec.effort}
+- **Impact:** ${rec.impact}
+- **How:** ${rec.implementation}
+`).join('\n')}
+
+### 📅 MEDIUM-TERM (Next 2-4 Weeks)
+
+${audit.recommendations.mediumTerm.map((rec, i) => `
+#### ${i + 1}. ${rec.task}
+- **Effort:** ${rec.effort}
+- **Impact:** ${rec.impact}
+- **How:** ${rec.implementation}
+`).join('\n')}
+
+### 🏗️ LONG-TERM (Next 1-3 Months)
+
+${audit.recommendations.longTerm.map((rec, i) => `
+#### ${i + 1}. ${rec.task}
+- **Effort:** ${rec.effort}
+- **Impact:** ${rec.impact}
+- **How:** ${rec.implementation}
+`).join('\n')}
+
+---
+
+## 📸 VISUAL EVIDENCE
+
+${audit.screenshots.length} screenshots captured during audit.
+
+Screenshots saved to: \`tests/audit-screenshots/\`
+
+---
+
+## 🎬 FINAL VERDICT
+
+This application exhibits **significant characteristics of AI-generated design** with minimal human refinement. The lack of a cohesive design system, inconsistent spacing and typography, missing microinteractions, and impersonal copy all point to automated generation without thoughtful design iteration.
+
+### What Users Will Think:
+- "This looks like a template"
+- "This has no personality"
+- "This feels unfinished"
+- "This doesn't feel professional"
+- "This looks AI-generated"
+
+### What Needs to Happen:
+1. **Build a design system** - This is non-negotiable
+2. **Add microinteractions** - Make it feel alive
+3. **Rewrite the copy** - Give it personality
+4. **Fix the spacing** - Create visual rhythm
+5. **Add edge cases** - Handle empty/loading/error states
+6. **Polish everything** - Sweat the details
+
+### Bottom Line:
+**This app needs significant design work before it can compete with professional SaaS products.** The good news: most issues are fixable with systematic design system implementation and attention to detail.
+
+---
+
+**Report Generated by:** Kiro Master Audit System  
+**Benchmark Apps:** Linear, Notion, Stripe, Figma, Revolut, Wise, Intercom, Headway, Cleo, Cron, Craft
+`;
+
+  // Write report
+  const reportPath = 'tests/audit-reports/BRUTAL-AUDIT-REPORT.md';
+  fs.writeFileSync(reportPath, report);
+  
+  console.log(`\n✅ Human-readable report generated: ${reportPath}`);
+  console.log(`\n📖 Open this file to read the full brutal assessment.`);
+}
+
+function formatAISignals(signals) {
+  if (!signals || signals.length === 0) {
+    return '*No issues detected in this category*';
+  }
+  
+  return signals.map(signal => `
+#### ${signal.signal || 'Issue'} [${signal.severity}]
+
+**Evidence:** ${signal.evidence}  
+**Why This Matters:** ${signal.why}  
+**Fix:** ${signal.fix}
+`).join('\n');
+}
+
+// Run if called directly
+if (require.main === module) {
+  generateHumanReport();
+}
+
+module.exports = { generateHumanReport };

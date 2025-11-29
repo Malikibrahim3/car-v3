@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm start)",
+      "Bash(npx playwright install chromium)",
+      "Bash(npx playwright test:*)",
+      "WebFetch(domain:carapi.app)",
+      "WebSearch",
+      "Bash(node test-form.js:*)",
+      "Bash(npx prisma:*)",
+      "Bash(node prisma/seed.js:*)",
+      "Bash(node:*)",
+      "Bash(npm run dev:*)",
+      "Bash(lsof:*)",
+      "Bash(PWTEST_SKIP_TEST_OUTPUT=1 npx playwright test:*)",
+      "Bash(xargs kill:*)",
+      "Bash(curl:*)",
+      "Bash(kill:*)",
+      "WebFetch(domain:apidocs.marketcheck.com)",
+      "Read(//var/folders/dz/xfpyyb_n4mngp387jgsb375h0000gn/T/TemporaryItems/NSIRD_screencaptureui_Lfdx6f/**)",
+      "Bash(npx playwright codegen:*)",
+      "Read(//var/folders/dz/xfpyyb_n4mngp387jgsb375h0000gn/T/TemporaryItems/NSIRD_screencaptureui_oa1VT7/**)",
+      "Read(//var/folders/dz/xfpyyb_n4mngp387jgsb375h0000gn/T/TemporaryItems/NSIRD_screencaptureui_Z483ev/**)",
+      "Read(//Users/malikibrahim/Documents/**)",
+      "Read(//var/folders/dz/xfpyyb_n4mngp387jgsb375h0000gn/T/TemporaryItems/NSIRD_screencaptureui_Vf7ARv/**)",
+      "Read(//var/folders/dz/xfpyyb_n4mngp387jgsb375h0000gn/T/TemporaryItems/NSIRD_screencaptureui_HEAtyV/**)",
+      "Bash(npx expo start:*)",
+      "Bash(scutil:*)",
+      "Bash(/usr/libexec/ApplicationFirewall/socketfilterfw:*)",
+      "Bash(route -n get:*)",
+      "Bash(cat:*)",
+      "Bash(arp:*)",
+      "Bash(networksetup -listallhardwareports:*)",
+      "Bash(npx expo prebuild:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

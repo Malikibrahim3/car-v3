@@ -1,0 +1,155 @@
+.car-brands-ticker {
+  width: 100%;
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2.5rem 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 20;
+}
+
+.ticker-label-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ticker-label {
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #52525b;
+  margin: 0;
+}
+
+.ticker-trust-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: #71717a;
+}
+
+@media (max-width: 768px) {
+  .ticker-trust-line {
+    font-size: 0.875rem; /* Keep at 14px minimum for accessibility */
+  }
+}
+
+.ticker-trust-line svg {
+  color: #f97316;
+  flex-shrink: 0;
+}
+
+/* Marquee Container */
+.ticker-marquee {
+  position: relative;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+/* Animated Track */
+.ticker-track {
+  display: flex;
+  align-items: center;
+  gap: 6rem;
+  padding: 0 3rem;
+  white-space: nowrap;
+  animation: marquee 29s linear infinite;
+}
+
+.ticker-logo {
+  height: 53.76px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #52525b;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  cursor: default;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.ticker-logo svg {
+  height: 100%;
+  width: auto;
+}
+
+.ticker-logo:hover {
+  opacity: 1;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .car-brands-ticker {
+    padding: 2rem 0;
+  }
+  
+  .ticker-label-container {
+    padding: 0 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .ticker-label {
+    font-size: 0.875rem; /* Keep at 14px minimum for accessibility */
+    letter-spacing: 0.1em;
+  }
+  
+  .ticker-trust-line {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+  
+  .ticker-logo {
+    height: 43px;
+  }
+  
+  .ticker-track {
+    gap: 3rem;
+    padding: 0 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .car-brands-ticker {
+    padding: 1.5rem 0;
+  }
+  
+  .ticker-logo {
+    height: 34px;
+  }
+  
+  .ticker-track {
+    gap: 2rem;
+  }
+}

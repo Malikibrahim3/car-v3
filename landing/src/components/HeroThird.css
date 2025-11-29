@@ -1,0 +1,773 @@
+.hero-third {
+  position: relative;
+  width: 100%;
+  background: #000000;
+  padding: 9rem 0 8rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+/* Subtle grid pattern background */
+.hero-third::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.ht-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* SECTION HEADER */
+.ht-header {
+  margin-bottom: 3rem;
+  will-change: transform, opacity;
+  transform-origin: center top;
+  position: relative;
+  z-index: 20;
+}
+
+.ht-title {
+  font-size: clamp(2.875rem, 5.75vw, 4.6rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.ht-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.ht-title-muted {
+  color: #71717a;
+}
+
+.ht-subtitle {
+  font-size: 1.294rem;
+  line-height: 1.7;
+  color: #a1a1aa;
+  font-weight: 400;
+}
+
+/* CTA Buttons - Right aligned */
+.ht-cta-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.ht-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Orange circling border animation on hover */
+.ht-cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #f97316 60deg,
+    #fb923c 120deg,
+    transparent 180deg
+  );
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: htCircleRotate 2s linear infinite paused;
+  z-index: -1;
+}
+
+.ht-cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: inherit;
+  border-radius: 2px;
+  z-index: -1;
+}
+
+.ht-cta-btn:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes htCircleRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ht-cta-ios {
+  background: #ffffff;
+  color: #000000;
+}
+
+.ht-cta-ios::after {
+  background: #ffffff;
+}
+
+.ht-cta-ios:hover {
+  transform: translateY(-2px);
+}
+
+.ht-cta-android {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.ht-cta-android::after {
+  background: #000000;
+}
+
+.ht-cta-android:hover {
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+/* BENTO GRID */
+.ht-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, minmax(280px, auto));
+  gap: 1.5rem;
+  height: auto;
+  position: relative;
+  z-index: 10;
+  perspective: 1000px;
+}
+
+/* CARD BASE */
+.ht-card {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.ht-card:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+  background: rgba(15, 15, 15, 0.9);
+}
+
+/* Subtle corner accent */
+.ht-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.ht-card:hover::after {
+  opacity: 1;
+}
+
+/* CARD VARIANTS */
+.ht-card-large {
+  grid-column: span 1;
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.ht-card-wide {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.ht-card-small {
+  grid-column: span 1;
+  grid-row: span 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ht-card-small:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+/* HOVER GRADIENT (for large card) */
+.ht-card-hover-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(249, 115, 22, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.ht-card-large:hover .ht-card-hover-gradient {
+  opacity: 1;
+}
+
+/* CARD CONTENT */
+.ht-card-content {
+  position: relative;
+  z-index: 10;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Active indicator - small orange line that glows on hover */
+.ht-active-indicator {
+  width: 24px;
+  height: 2px;
+  background: rgba(113, 113, 122, 0.5);
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.ht-card:hover .ht-active-indicator {
+  background: #f97316;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+  width: 32px;
+}
+
+/* Monospace card number */
+.ht-card-number {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  color: #71717a;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.ht-card:hover .ht-card-number {
+  color: #f97316;
+}
+
+/* ICON CIRCLE (large card) */
+.ht-icon-circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: transparent;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  color: #f97316;
+  transition: all 0.3s ease;
+}
+
+.ht-card:hover .ht-icon-circle {
+  border-color: rgba(249, 115, 22, 0.6);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+}
+
+.ht-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ICON SQUARE (small cards) */
+.ht-icon-square {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.ht-card:hover .ht-icon-square {
+  border-color: rgba(249, 115, 22, 0.5);
+  color: #f97316;
+}
+
+.ht-icon-sm {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* CARD TITLES */
+.ht-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.ht-card-title-sm {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.ht-card-desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #a1a1aa;
+  margin-bottom: 2rem;
+}
+
+.ht-card-label {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+/* USER LIST (Family Sharing card) */
+.ht-user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.ht-user-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(39, 39, 42, 0.5);
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+.ht-user-item:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+  background: rgba(39, 39, 42, 0.7);
+}
+
+/* Third user placeholder */
+.ht-user-item-add {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.1);
+  justify-content: center;
+  color: #71717a;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.ht-user-item-add:hover {
+  border-color: rgba(249, 115, 22, 0.4);
+  color: #f97316;
+}
+
+.ht-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #ffffff;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.ht-avatar-owner {
+  background: #ea580c;
+}
+
+.ht-avatar-viewer {
+  background: #3f3f46;
+}
+
+.ht-user-name {
+  font-size: 0.875rem;
+  color: #d4d4d8;
+}
+
+/* SECURITY CARD (wide) */
+.ht-glow-effect {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(249, 115, 22, 0.1);
+  border-radius: 0;
+  filter: blur(80px);
+  transition: background 0.5s ease;
+}
+
+.ht-card-wide:hover .ht-glow-effect {
+  background: rgba(249, 115, 22, 0.2);
+}
+
+.ht-card-content-wide {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.ht-security-text {
+  max-width: 24rem;
+}
+
+.ht-security-icon {
+  margin-top: 0;
+  padding: 1rem;
+  background: transparent;
+  border-radius: 0;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  transition: all 0.3s ease;
+}
+
+.ht-card-wide:hover .ht-security-icon {
+  border-color: rgba(249, 115, 22, 0.6);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+}
+
+.ht-lock-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #f97316;
+}
+
+/* PROGRESS BAR (Market Alerts card) */
+.ht-progress-bar {
+  width: 100%;
+  background: #27272a;
+  height: 2px;
+  margin-top: 1.5rem;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.ht-progress-fill {
+  background: #f97316;
+  width: 75%;
+  height: 100%;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+}
+
+/* Alert threshold indicator */
+.ht-alert-visual {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.ht-alert-dot {
+  width: 6px;
+  height: 6px;
+  background: #f97316;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.ht-alert-text {
+  font-size: 0.75rem;
+  color: #f97316;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* LOG LINES (Maintenance Log card) */
+.ht-log-visual {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ht-log-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ht-log-date {
+  font-size: 0.75rem;
+  color: #71717a;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  min-width: 60px;
+}
+
+.ht-log-type {
+  font-size: 0.75rem;
+  color: #a1a1aa;
+}
+
+.ht-log-entry:last-child {
+  border-bottom: none;
+}
+
+/* Value boost indicator for service log */
+.ht-value-boost {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  font-size: 0.75rem;
+  color: #22c55e;
+}
+
+.ht-value-boost svg {
+  flex-shrink: 0;
+}
+
+/* TOTAL COST OF OWNERSHIP CARD */
+.ht-card-coming-soon {
+  grid-column: span 2;
+  background: rgba(10, 10, 10, 0.6);
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.ht-card-coming-soon:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+.ht-coming-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  font-size: 0.75rem;
+  color: #f97316;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.ht-tco-text {
+  max-width: 24rem;
+}
+
+.ht-tco-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 180px;
+  padding: 1rem;
+  background: rgba(39, 39, 42, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ht-tco-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ht-tco-label {
+  font-size: 0.75rem;
+  color: #71717a;
+}
+
+.ht-tco-value {
+  font-size: 0.75rem;
+  color: #a1a1aa;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.ht-tco-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.25rem 0;
+}
+
+.ht-tco-total .ht-tco-label {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.ht-tco-total .ht-tco-value {
+  color: #f97316;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .ht-bento-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+  }
+
+  .ht-card-large,
+  .ht-card-wide,
+  .ht-card-small {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .ht-card-content-wide {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ht-security-icon {
+    margin-top: 1.5rem;
+  }
+
+  .ht-cta-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-third {
+    padding: 4rem 0;
+  }
+
+  .ht-container {
+    padding: 0 1rem;
+  }
+
+  .ht-header {
+    margin-bottom: 2rem;
+  }
+
+  .ht-title {
+    font-size: clamp(1.875rem, 8vw, 2.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .ht-title-line {
+    white-space: normal;
+  }
+
+  .ht-subtitle {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .ht-cta-container {
+    display: none;
+  }
+
+  .ht-bento-grid {
+    gap: 1rem;
+  }
+
+  .ht-card {
+    padding: 1.25rem;
+  }
+
+  .ht-card-title {
+    font-size: 1.125rem;
+  }
+
+  .ht-card-title-sm {
+    font-size: 1rem;
+  }
+
+  .ht-card-desc {
+    font-size: 0.8125rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ht-user-list {
+    gap: 0.5rem;
+  }
+
+  .ht-user-item {
+    padding: 0.625rem 0.75rem;
+  }
+
+  .ht-tco-preview {
+    min-width: 100%;
+    margin-top: 1rem;
+  }
+
+  /* Hide glow effects on mobile to prevent overflow */
+  .ht-glow-effect,
+  .ht-card-hover-gradient {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-third {
+    padding: 3rem 0;
+  }
+
+  .ht-title {
+    font-size: 1.75rem;
+  }
+
+  .ht-card {
+    padding: 1rem;
+  }
+
+  .ht-icon-circle,
+  .ht-icon-square {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .ht-icon,
+  .ht-icon-sm {
+    width: 1rem;
+    height: 1rem;
+  }
+}

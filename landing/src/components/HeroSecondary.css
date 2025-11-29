@@ -1,0 +1,739 @@
+.hero-secondary-swiss {
+  position: relative;
+  width: 100%;
+  background: #F9F9F7;
+  padding: 6rem 0 0 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 1000px;
+}
+
+/* Content wrapper for fade effect */
+.hs-content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  will-change: transform, opacity;
+}
+
+/* Background image - grayscale for premium look with parallax */
+.hs-background-image {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  right: 0;
+  bottom: -50px;
+  width: 100%;
+  max-width: 100vw;
+  height: calc(100% + 100px);
+  object-fit: cover;
+  object-position: center 130%;
+  opacity: 0.5;
+  filter: grayscale(100%);
+  z-index: 0;
+  will-change: transform;
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .hs-background-image {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .hs-background-image {
+    transform: scale(1);
+    max-width: 100%;
+  }
+}
+
+/* Gradient overlay - fades from transparent at top to black at bottom */
+.hs-gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 20%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Solid black bar at the very bottom to cover any gap */
+.hero-secondary-swiss::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0px;
+  background: #000000;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.hs-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* 50/50 Split Grid */
+.hs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+/* Left spacer - empty, reserved for car */
+.hs-left-spacer {
+  display: block;
+}
+
+/* Right column - content */
+.hs-right-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+/* Headline - centered */
+.hs-headline {
+  font-size: clamp(2.875rem, 5.75vw, 4.6rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #000000;
+  margin-bottom: 1rem;
+  padding-top: 9.6rem;
+  text-align: center;
+  padding-left: 0;
+}
+
+/* Subtitle - centered */
+.hs-subtitle {
+  font-size: 1.294rem;
+  line-height: 1.7;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-weight: 400;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 200;
+}
+
+/* CTA Buttons Container - Centered */
+.hs-cta-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-left: 0;
+  position: relative;
+  z-index: 500;
+}
+
+.hs-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Orange circling border animation on hover */
+.hs-cta-btn::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #f97316 60deg,
+    #fb923c 120deg,
+    transparent 180deg
+  );
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: hsCircleRotate 2s linear infinite paused;
+  z-index: -1;
+}
+
+.hs-cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: inherit;
+  border-radius: 2px;
+  z-index: -1;
+}
+
+.hs-cta-btn:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes hsCircleRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hs-cta-ios {
+  background: #000000;
+  color: #ffffff;
+}
+
+.hs-cta-ios::after {
+  background: #000000;
+}
+
+.hs-cta-ios:hover {
+  transform: translateY(-2px);
+}
+
+.hs-cta-android {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.hs-cta-android::after {
+  background: #ffffff;
+}
+
+.hs-cta-android:hover {
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+
+/* Scroll-linked messy highlight effect */
+.hs-highlight-word {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.05em;
+}
+
+/* Base highlight mark styling - sharp edges */
+.hs-highlight-mark {
+  position: absolute;
+  top: 0;
+  left: -0.1em;
+  right: -0.1em;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* First pass - lighter, left to right, slightly tilted */
+.hs-highlight-mark-1 {
+  background: rgba(22, 163, 74, 0.7);
+  transform: rotate(-0.8deg) skewX(-1.5deg);
+  top: 8%;
+  bottom: 12%;
+}
+
+/* Second pass - darker, RIGHT TO LEFT (backwards), offset and tilted opposite */
+.hs-highlight-mark-2 {
+  background: rgba(21, 128, 61, 0.65);
+  transform: rotate(0.6deg) skewX(1.2deg);
+  top: 12%;
+  bottom: 8%;
+  left: -0.08em;
+  right: -0.12em;
+}
+
+/* Premium Area Chart - Fills the dead space */
+.hs-premium-chart {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 160px;
+  margin: 2rem 0;
+}
+
+.hs-chart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+/* Badge Container */
+.hs-badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.hs-equity-badge {
+  background: white;
+  border: 1px solid #fee2e2;
+  border-radius: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease;
+}
+
+.hs-equity-badge:hover {
+  transform: scale(1.05);
+}
+
+.hs-badge-value {
+  color: #dc2626;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+}
+
+.hs-badge-label {
+  color: #a1a1aa;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Connecting line to the dot */
+.hs-badge-connector {
+  width: 1px;
+  height: 1rem;
+  background: #fecaca;
+  margin-right: 2rem;
+}
+
+/* Bottom Axis Line (Visual Anchor) */
+.hs-chart-axis {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: #d4d4d8;
+}
+
+/* Features List */
+.hs-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hs-feature-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.hs-feature-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.hs-feature-line {
+  width: 24px;
+  height: 1px;
+  background: #dc2626;
+  flex-shrink: 0;
+}
+
+.hs-feature-line-hover {
+  background: #d4d4d8;
+  transition: background-color 0.2s ease;
+}
+
+.hs-feature-item:hover .hs-feature-line-hover {
+  background: #dc2626;
+}
+
+.hs-feature-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #000000;
+}
+
+.hs-feature-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #71717a;
+  padding-left: 2.5rem;
+  max-width: 448px;
+}
+
+/* Car - Large, bleeding off left edge but balanced */
+.hs-car-wrapper {
+  position: absolute;
+  bottom: 1%;
+  left: -8%;
+  width: 65%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hs-car-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transform: scaleX(-1);
+  filter: grayscale(100%) drop-shadow(0 25px 25px rgba(0,0,0,0.35)) drop-shadow(0 60px 120px rgba(0,0,0,0.15));
+  will-change: transform;
+}
+
+/* ========================================
+   HORIZONTAL BOTTOM CARDS - Dark, Sharp, Technical
+   ======================================== */
+.hs-bottom-cards {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  padding-top: 10%;
+  padding-bottom: 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  z-index: 100;
+  background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.9) 10%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0.3) 80%, transparent 100%);
+  will-change: transform;
+}
+
+.hs-dark-card {
+  background: #000000;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hs-dark-card:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+/* Subtle gradient hover effect */
+.hs-card-hover-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(124, 45, 18, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.hs-dark-card:hover .hs-card-hover-gradient {
+  opacity: 1;
+}
+
+.hs-card-content {
+  position: relative;
+  z-index: 15;
+}
+
+/* Active indicator - small orange line that glows on hover */
+.hs-active-indicator {
+  width: 24px;
+  height: 2px;
+  background: rgba(113, 113, 122, 0.5);
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.hs-dark-card:hover .hs-active-indicator {
+  background: #f97316;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+  width: 32px;
+}
+
+/* Highlighted card (magic moment) */
+.hs-dark-card-highlight {
+  border-color: rgba(249, 115, 22, 0.3);
+  background: rgba(249, 115, 22, 0.05);
+}
+
+.hs-dark-card-highlight .hs-active-indicator {
+  background: #f97316;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
+}
+
+.hs-dark-card-highlight .hs-card-number {
+  color: #f97316;
+}
+
+/* Magic moment badge */
+.hs-magic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.375rem 0.75rem;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  font-size: 0.75rem;
+  color: #f97316;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hs-magic-dot {
+  width: 6px;
+  height: 6px;
+  background: #f97316;
+  border-radius: 50%;
+  animation: magicPulse 2s ease-in-out infinite;
+}
+
+@keyframes magicPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px rgba(249, 115, 22, 0.6); }
+  50% { opacity: 0.5; box-shadow: 0 0 8px rgba(249, 115, 22, 0.8); }
+}
+
+/* Large monospace numbers - grey, technical */
+.hs-card-number {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  color: #71717a;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 20;
+}
+
+.hs-dark-card:hover .hs-card-number {
+  color: #f97316;
+}
+
+.hs-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+
+.hs-card-desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #a1a1aa;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-secondary-swiss {
+    min-height: auto;
+    padding: 4rem 0;
+    padding-bottom: 0;
+  }
+
+  .hs-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .hs-left-spacer {
+    display: none;
+  }
+
+  .hs-car-wrapper {
+    position: relative;
+    width: 100%;
+    left: -10%;
+    margin: 2rem auto 0;
+    bottom: auto;
+  }
+
+  /* Bottom cards - 3 columns maintained on tablet */
+  .hs-bottom-cards {
+    position: relative;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .hs-dark-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-secondary-swiss {
+    padding: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Show background image on mobile */
+  .hs-background-image {
+    display: block;
+    position: absolute;
+    top: -27%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 127%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 50% center;
+    opacity: 0.4;
+    transform: none;
+  }
+
+  /* Show gradient overlay on mobile */
+  .hs-gradient-overlay {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 40%, rgba(0, 0, 0, 0.95) 100%);
+  }
+
+  .hs-content-wrapper {
+    position: relative;
+    z-index: 10;
+    padding-top: 3rem;
+  }
+
+  .hs-container {
+    padding: 0 1rem;
+  }
+
+  .hs-headline {
+    font-size: clamp(1.875rem, 8vw, 2.5rem);
+    padding-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #ffffff;
+  }
+
+  .hs-subtitle {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Hide CTAs on mobile - they're in the navbar now */
+  .hs-cta-container {
+    display: none;
+  }
+
+  .hs-car-wrapper {
+    display: none;
+  }
+
+  /* Bottom cards - stacked vertically on mobile */
+  .hs-bottom-cards {
+    position: absolute;
+    bottom: 6%;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    background: transparent;
+    z-index: 100;
+  }
+
+  .hs-dark-card {
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .hs-card-number {
+    display: none;
+  }
+
+  .hs-card-title {
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .hs-active-indicator {
+    display: none;
+  }
+
+  .hs-card-desc {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .hs-magic-badge {
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.625rem;
+  }
+
+  /* Hide hover gradients on mobile */
+  .hs-card-hover-gradient {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hs-headline {
+    font-size: 1.75rem;
+    padding-top: 1.5rem;
+  }
+
+  .hs-subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .hs-bottom-cards {
+    padding: 0.75rem;
+    gap: 0.375rem;
+  }
+
+  .hs-dark-card {
+    padding: 0.625rem 0.875rem;
+  }
+
+  .hs-card-title {
+    font-size: 0.875rem;
+  }
+
+  .hs-card-desc {
+    font-size: 0.6875rem;
+  }
+}

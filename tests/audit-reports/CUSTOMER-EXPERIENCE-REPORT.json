@@ -1,0 +1,79 @@
+{
+  "timestamp": "2025-11-21T00:16:26.917Z",
+  "questions": {
+    "customerAppeal": {
+      "score": 70,
+      "maxScore": 100,
+      "findings": [
+        "❌ No gradients detected - looks flat",
+        "✅ Uses shadows for depth",
+        "⚠️ Limited visual content (2 elements)",
+        "✅ Balanced color palette (10 colors)",
+        "✅ Modern rounded corners",
+        "✅ Modern typography (-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Oxygen, Ubuntu, Cantarell, \"Fira Sans\", \"Droid Sans\", \"Helvetica Neue\", sans-serif)"
+      ],
+      "screenshots": [
+        "tests/customer-audit-screenshots/dashboard-first-impression-1763684195156.png"
+      ],
+      "verdict": "Customers will like it"
+    },
+    "features": {
+      "score": 20,
+      "maxScore": 100,
+      "findings": [
+        "✅ Smooth transitions present",
+        "❌ No charts - missing data viz",
+        "⚠️ No status badges",
+        "⚠️ Limited icons (2 icons)",
+        "⚠️ No progress indicators",
+        "❌ No loading states",
+        "❌ No empty state handling"
+      ],
+      "verdict": "Missing key features"
+    },
+    "usability": {
+      "score": 23,
+      "maxScore": 100,
+      "findings": [
+        "⚠️ Navigation unclear",
+        "❌ No clear page title (H1)",
+        "⚠️ Unclear button labels (0 buttons)",
+        "⚠️ No search functionality",
+        "❌ Many touch targets too small (0%)",
+        "❌ No visual feedback",
+        "✅ Consistent layout",
+        "⚠️ No input validation"
+      ],
+      "verdict": "Difficult to use"
+    },
+    "cohesion": {
+      "score": 85,
+      "maxScore": 100,
+      "findings": [
+        "✅ Consistent background across pages",
+        "✅ Consistent typography across pages",
+        "✅ Consistent card styling",
+        "✅ Consistent button styling",
+        "⚠️ No clear design system",
+        "⚠️ Limited color palette (6 colors)"
+      ],
+      "verdict": "Highly cohesive"
+    },
+    "dataRichness": {
+      "score": 40,
+      "maxScore": 100,
+      "findings": [
+        "⚠️ Moderate data (6 data points)",
+        "❌ No data visualizations",
+        "⚠️ Limited data categories (3 types)",
+        "✅ Trend indicators present",
+        "⚠️ No time-based data",
+        "⚠️ No comparative data",
+        "⚠️ Limited vehicle data (0 points)"
+      ],
+      "verdict": "Adequate data"
+    }
+  },
+  "overallScore": 48,
+  "verdict": "❌ POOR - Major overhaul needed"
+}
