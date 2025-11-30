@@ -1,34 +1,58 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useCallback, useMemo } from 'react'
+import { useOptimizedScroll } from '../hooks/useOptimizedScroll'
 import './Hero.css'
 
 function Hero() {
   const bgRef = useRef(null)
   const contentRef = useRef(null)
-
+  const iphoneRef = useRef(null)
+  
+  // Cache window dimensions to avoid repeated reads
+  const windowDimensions = useRef({ width: window.innerWidth, height: window.innerHeight })
+  
+  // Update dimensions on resize (throttled)
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY
-      
-      // Parallax: background moves slower than scroll
-      if (bgRef.current) {
-        bgRef.current.style.transform = `translateY(${scrollY * 0.5}px)`
-      }
-      
-      // Content fades out and moves up slightly
-      if (contentRef.current) {
-        // On desktop, fade 25% later (increase divisor from 600 to 750)
-        const isMobile = window.innerWidth <= 768
-        const fadeDivisor = isMobile ? 600 : 750
-        const opacity = Math.max(0, 1 - scrollY / fadeDivisor)
-        const translateY = scrollY * 0.2
-        contentRef.current.style.opacity = opacity
-        contentRef.current.style.transform = `translateY(${translateY}px)`
-      }
+    let resizeTimeout
+    const handleResize = () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(() => {
+        windowDimensions.current = { width: window.innerWidth, height: window.innerHeight }
+      }, 100)
     }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleResize, { passive: true })
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimeout)
+    }
   }, [])
+
+  const handleScroll = useCallback(() => {
+    const scrollY = window.scrollY
+    const isMobile = windowDimensions.current.width <= 768
+    
+    // Batch all transforms together using CSS custom properties for better performance
+    const bg = bgRef.current
+    const content = contentRef.current
+    const iphone = iphoneRef.current
+    
+    if (bg) {
+      bg.style.transform = `translate3d(0, ${scrollY * 0.5}px, 0)`
+    }
+    
+    if (iphone) {
+      iphone.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`
+    }
+    
+    if (content) {
+      const fadeDivisor = isMobile ? 600 : 750
+      const opacity = Math.max(0, 1 - scrollY / fadeDivisor)
+      const translateY = scrollY * 0.2
+      content.style.opacity = opacity
+      content.style.transform = `translate3d(0, ${translateY}px, 0)`
+    }
+  }, [])
+
+  useOptimizedScroll(handleScroll, [], 16)
 
   return (
     <section className="hero">
@@ -38,14 +62,28 @@ function Hero() {
           src="/hero-bg.jpg" 
           alt="Luxury sports car showcasing automotive excellence" 
           className="hero-bg-image"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
         />
+        {/* iPhone mockup in front of car */}
+        <div className="hero-iphone-container" ref={iphoneRef}>
+          <div className="hero-iphone-blur"></div>
+          <img 
+            src="/usethis.png" 
+            alt="AutoTrack app interface on iPhone" 
+            className="hero-iphone"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
         {/* Dark gradient overlay fades to black on left */}
         <div className="hero-overlay" />
       </div>
       
       <div className="hero-content" ref={contentRef}>
         <div className="hero-text">
-          <p className="hero-tagline">Sell at the right time</p>
+          <p className="hero-tagline">From first cars to dream cars</p>
           
           <h1 className="hero-title">
             Your car is an asset. Treat it like one.
@@ -76,6 +114,7 @@ function Hero() {
                   src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://apps.apple.com/app/autotrack&bgcolor=ffffff&color=000000" 
                   alt="Scan to download AutoTrack on iOS"
                   className="hero-qr-code"
+                  loading="lazy"
                 />
               </div>
               <div className="hero-qr-text">

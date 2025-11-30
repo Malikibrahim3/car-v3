@@ -18,6 +18,8 @@
   /* Match the dark tones from the image edges */
   background: linear-gradient(to bottom, #1a1c1f 0%, #0d0e10 50%, #0a0a0a 100%);
   will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,6 +57,51 @@
   }
 }
 
+/* iPhone mockup container */
+.hero-iphone-container {
+  position: absolute;
+  right: 10%;
+  bottom: 28%;
+  height: 74.75vh;
+  max-height: 805px;
+  z-index: 2;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Blur layer behind the phone - 78% width */
+.hero-iphone-blur {
+  position: absolute;
+  top: 0;
+  left: 1%;
+  width: 78%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50px;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Disable expensive backdrop-filter on mobile for better performance */
+@media (max-width: 768px) {
+  .hero-iphone-blur {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* iPhone image */
+.hero-iphone {
+  position: relative;
+  height: 100%;
+  width: auto;
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.5));
+}
+
 /* Dark gradient overlay - dark on left, transparent on right */
 .hero-overlay {
   position: absolute;
@@ -67,6 +114,7 @@
     rgba(0, 0, 0, 0.3) 60%,
     rgba(0, 0, 0, 0) 100%
   );
+  z-index: 1;
 }
 
 /* Content positioned on left */
@@ -80,6 +128,8 @@
   display: flex;
   justify-content: flex-start;
   will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .hero-text {
@@ -194,6 +244,8 @@
   transition: opacity 0.3s ease;
   animation: circleRotate 2s linear infinite paused;
   z-index: -1;
+  will-change: transform;
+  transform: translate3d(0, 0, 0) rotate(0deg);
 }
 
 .hero-cta-btn::after {
@@ -211,8 +263,8 @@
 }
 
 @keyframes circleRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from { transform: translate3d(0, 0, 0) rotate(0deg); }
+  to { transform: translate3d(0, 0, 0) rotate(360deg); }
 }
 
 .hero-cta-ios {
@@ -273,12 +325,22 @@
 }
 
 @keyframes scrollPulse {
-  0%, 100% { opacity: 0.5; height: 60px; }
-  50% { opacity: 1; height: 80px; }
+  0%, 100% { opacity: 0.5; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.33); }
+}
+
+.scroll-line {
+  transform-origin: top center;
 }
 
 /* Responsive */
 @media (max-width: 1024px) {
+  .hero-iphone {
+    right: 5%;
+    height: 50vh;
+    max-height: 500px;
+  }
+  
   .hero-content {
     padding: 0 2rem;
     justify-content: center;
@@ -313,6 +375,14 @@
 }
 
 @media (max-width: 768px) {
+  .hero-iphone {
+    right: -10%;
+    bottom: 15%;
+    height: 40vh;
+    max-height: 400px;
+    opacity: 0.6;
+  }
+  
   .hero {
     min-height: 100svh; /* Use small viewport height for mobile browsers */
     align-items: flex-start;

@@ -17,6 +17,8 @@
   right: 0;
   z-index: 150;
   will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* Background image - grayscale for premium look with parallax */
@@ -35,7 +37,8 @@
   filter: grayscale(100%);
   z-index: 0;
   will-change: transform;
-  transform: scale(1.1);
+  transform: translate3d(0, 0, 0) scale(1.1);
+  backface-visibility: hidden;
 }
 
 @media (max-width: 768px) {
@@ -419,7 +422,9 @@
   gap: 1.5rem;
   z-index: 100;
   background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0.9) 10%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0.3) 80%, transparent 100%);
-  will-change: transform;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .hs-dark-card {

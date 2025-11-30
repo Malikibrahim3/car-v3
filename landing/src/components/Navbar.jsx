@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useOptimizedScroll } from '../hooks/useOptimizedScroll'
 import './Navbar.css'
 
 function Navbar() {
@@ -8,26 +9,28 @@ function Navbar() {
   const [modalOpen, setModalOpen] = useState(false)
   const dropdownRef = useRef(null)
   const modalRef = useRef(null)
+  const pricingRef = useRef(null)
 
+  // Cache pricing section reference
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100)
-      
-      // Check if we're in the Pricing section (light background)
-      const pricing = document.querySelector('.pricing-section')
-      
-      let inLightSection = false
-      
-      if (pricing) {
-        const rect = pricing.getBoundingClientRect()
-        if (rect.top < 60 && rect.bottom > 0) inLightSection = true
-      }
-      
-      setLightSection(inLightSection)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    pricingRef.current = document.querySelector('.pricing-section')
   }, [])
+
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 100)
+    
+    const pricing = pricingRef.current
+    let inLightSection = false
+    
+    if (pricing) {
+      const rect = pricing.getBoundingClientRect()
+      if (rect.top < 60 && rect.bottom > 0) inLightSection = true
+    }
+    
+    setLightSection(inLightSection)
+  }, [])
+
+  useOptimizedScroll(handleScroll, [], 32) // 32ms throttle for navbar (less critical)
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -85,7 +88,6 @@ function Navbar() {
           <a href="#showcase">How it works</a>
           <a href="#pricing">Pricing</a>
           
-          {/* Mobile download dropdown - visible only on mobile */}
           <div className="navbar-mobile-download" ref={dropdownRef}>
             <button 
               className="navbar-download-trigger"
@@ -121,7 +123,6 @@ function Navbar() {
         <button className="navbar-cta" onClick={() => setModalOpen(true)}>Get Started</button>
       </div>
 
-      {/* Download Modal */}
       {modalOpen && (
         <div className="navbar-modal-overlay">
           <div className="navbar-modal" ref={modalRef}>
@@ -136,6 +137,7 @@ function Navbar() {
                 <img 
                   src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://apps.apple.com/app/autotrack&bgcolor=ffffff&color=000000" 
                   alt="Scan to download AutoTrack on iOS"
+                  loading="lazy"
                 />
               </div>
               

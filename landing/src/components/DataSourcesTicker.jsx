@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo, useMemo } from 'react'
 import './DataSourcesTicker.css'
 import { 
   SiPorsche, 
@@ -13,8 +13,18 @@ import {
   SiChevrolet
 } from 'react-icons/si'
 
+// Memoized brand icon component to prevent unnecessary re-renders
+const BrandIcon = memo(({ Icon, name }) => (
+  <div className="ticker-logo" title={name}>
+    <Icon />
+  </div>
+))
+
+BrandIcon.displayName = 'BrandIcon'
+
 function DataSourcesTicker() {
-  const brands = [
+  // Memoize brands array to prevent recreation on each render
+  const brands = useMemo(() => [
     { name: 'Porsche', Icon: SiPorsche },
     { name: 'BMW', Icon: SiBmw },
     { name: 'Mercedes', Icon: SiMercedes },
@@ -25,7 +35,7 @@ function DataSourcesTicker() {
     { name: 'Toyota', Icon: SiToyota },
     { name: 'Honda', Icon: SiHonda },
     { name: 'Chevrolet', Icon: SiChevrolet },
-  ]
+  ], [])
 
   return (
     <section className="car-brands-ticker">
@@ -45,15 +55,11 @@ function DataSourcesTicker() {
         <div className="ticker-track">
           {/* First set */}
           {brands.map((brand, index) => (
-            <div key={`brand-${index}`} className="ticker-logo" title={brand.name}>
-              <brand.Icon />
-            </div>
+            <BrandIcon key={`brand-${index}`} Icon={brand.Icon} name={brand.name} />
           ))}
           {/* Duplicate for seamless loop */}
           {brands.map((brand, index) => (
-            <div key={`brand-dup-${index}`} className="ticker-logo" title={brand.name}>
-              <brand.Icon />
-            </div>
+            <BrandIcon key={`brand-dup-${index}`} Icon={brand.Icon} name={brand.name} />
           ))}
         </div>
       </div>
@@ -61,4 +67,4 @@ function DataSourcesTicker() {
   )
 }
 
-export default DataSourcesTicker
+export default memo(DataSourcesTicker)

@@ -72,6 +72,36 @@
   box-sizing: border-box;
 }
 
+/* GPU acceleration for animated elements */
+.hero-bg,
+.hero-content,
+.hero-iphone-container,
+.hs-background-image,
+.hs-content-wrapper,
+.hs-bottom-cards,
+.ht-header,
+.ht-card,
+.ticker-track {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .ticker-track {
+    animation: none !important;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
@@ -247,6 +277,23 @@ section.large {
 }
 
 /* Minimal animations - only for essential feedback */
+
+/* Containment for performance */
+section {
+  contain: layout style;
+}
+
+.hero,
+.hero-secondary-swiss,
+.hero-third,
+.pricing-section {
+  contain: layout style paint;
+}
+
+/* Optimize images */
+img {
+  content-visibility: auto;
+}
 
 /* Selection */
 ::selection {

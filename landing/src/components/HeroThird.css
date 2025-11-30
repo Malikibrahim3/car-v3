@@ -35,6 +35,8 @@
   transform-origin: center top;
   position: relative;
   z-index: 20;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .ht-title {
@@ -177,6 +179,7 @@
   will-change: transform, opacity;
   transform-style: preserve-3d;
   backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 .ht-card:hover {
