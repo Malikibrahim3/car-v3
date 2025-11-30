@@ -27,6 +27,18 @@ function HeroThird() {
         return
       }
 
+      const isMobile = window.innerWidth <= 768
+      
+      // Skip all fade effects on mobile
+      if (isMobile) {
+        header.style.opacity = 1
+        cardRefs.current.forEach((card) => {
+          if (card) card.style.opacity = 1
+        })
+        ticking = false
+        return
+      }
+
       // Header fade in as section enters viewport
       const headerFadeInStart = windowHeight * 0.8
       const headerFadeInEnd = windowHeight * 0.3

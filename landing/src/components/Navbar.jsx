@@ -7,9 +7,11 @@ function Navbar() {
   const [lightSection, setLightSection] = useState(false)
   const [downloadOpen, setDownloadOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const dropdownRef = useRef(null)
   const modalRef = useRef(null)
   const pricingRef = useRef(null)
+  const menuRef = useRef(null)
 
   // Cache pricing section reference
   useEffect(() => {
@@ -17,7 +19,8 @@ function Navbar() {
   }, [])
 
   const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 100)
+    const isMobile = window.innerWidth <= 768
+    setScrolled(window.scrollY > (isMobile ? 10 : 100))
     
     const pricing = pricingRef.current
     let inLightSection = false
@@ -32,11 +35,24 @@ function Navbar() {
 
   useOptimizedScroll(handleScroll, [], 32) // 32ms throttle for navbar (less critical)
 
-  // Close dropdown when clicking outside
+  // Direct scroll listener as backup
+  useEffect(() => {
+    const onScroll = () => {
+      const isMobile = window.innerWidth <= 768
+      setScrolled(window.scrollY > (isMobile ? 10 : 100))
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Close dropdown and menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDownloadOpen(false)
+      }
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -87,6 +103,7 @@ function Navbar() {
           <a href="#features">Features</a>
           <a href="#showcase">How it works</a>
           <a href="#pricing">Pricing</a>
+          <button className="navbar-download-btn" onClick={() => setModalOpen(true)}>Download</button>
           
           <div className="navbar-mobile-download" ref={dropdownRef}>
             <button 
@@ -164,6 +181,35 @@ function Navbar() {
           </div>
         </div>
       )}
+
+      {/* Mobile floating buttons - always visible on mobile */}
+      <div className="mobile-floating-buttons">
+        <div className="floating-menu-wrapper" ref={menuRef}>
+          <button 
+            className="floating-btn floating-menu-btn"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-expanded={menuOpen}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            Menu
+          </button>
+          {menuOpen && (
+            <div className="floating-menu-dropdown">
+              <a href="#features" onClick={() => setMenuOpen(false)}>Features</a>
+              <a href="#showcase" onClick={() => setMenuOpen(false)}>How it works</a>
+              <a href="#pricing" onClick={() => setMenuOpen(false)}>Pricing</a>
+            </div>
+          )}
+        </div>
+        <button className="floating-btn floating-download-btn" onClick={() => setModalOpen(true)}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+          </svg>
+          Download
+        </button>
+      </div>
     </nav>
   )
 }
