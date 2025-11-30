@@ -1,58 +1,56 @@
-import React, { useEffect, useRef, useCallback, useMemo } from 'react'
-import { useOptimizedScroll } from '../hooks/useOptimizedScroll'
+import React, { useEffect, useRef } from 'react'
 import './Hero.css'
+
+// Detect Safari browser (has poor scroll performance with JS parallax)
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
 function Hero() {
   const bgRef = useRef(null)
   const contentRef = useRef(null)
   const iphoneRef = useRef(null)
-  
-  // Cache window dimensions to avoid repeated reads
-  const windowDimensions = useRef({ width: window.innerWidth, height: window.innerHeight })
-  
-  // Update dimensions on resize (throttled)
+
   useEffect(() => {
-    let resizeTimeout
-    const handleResize = () => {
-      clearTimeout(resizeTimeout)
-      resizeTimeout = setTimeout(() => {
-        windowDimensions.current = { width: window.innerWidth, height: window.innerHeight }
-      }, 100)
+    // Skip parallax on Safari for better performance
+    if (isSafari) return
+    
+    let ticking = false
+    
+    const updateParallax = () => {
+      const scrollY = window.scrollY
+      const isMobile = window.innerWidth <= 768
+      
+      // Background parallax - GPU accelerated with translate3d
+      if (bgRef.current) {
+        bgRef.current.style.transform = `translate3d(0, ${scrollY * 0.5}px, 0)`
+      }
+      
+      // iPhone parallax - GPU accelerated
+      if (iphoneRef.current) {
+        iphoneRef.current.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`
+      }
+      
+      // Content fades and moves up as you scroll
+      if (contentRef.current) {
+        const fadeDivisor = isMobile ? 600 : 750
+        const opacity = Math.max(0, 1 - scrollY / fadeDivisor)
+        const translateY = scrollY * 0.2
+        contentRef.current.style.opacity = opacity
+        contentRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`
+      }
+      
+      ticking = false
     }
-    window.addEventListener('resize', handleResize, { passive: true })
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      clearTimeout(resizeTimeout)
-    }
-  }, [])
 
-  const handleScroll = useCallback(() => {
-    const scrollY = window.scrollY
-    const isMobile = windowDimensions.current.width <= 768
-    
-    // Batch all transforms together using CSS custom properties for better performance
-    const bg = bgRef.current
-    const content = contentRef.current
-    const iphone = iphoneRef.current
-    
-    if (bg) {
-      bg.style.transform = `translate3d(0, ${scrollY * 0.5}px, 0)`
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax)
+        ticking = true
+      }
     }
-    
-    if (iphone) {
-      iphone.style.transform = `translate3d(0, ${scrollY * 0.3}px, 0)`
-    }
-    
-    if (content) {
-      const fadeDivisor = isMobile ? 600 : 750
-      const opacity = Math.max(0, 1 - scrollY / fadeDivisor)
-      const translateY = scrollY * 0.2
-      content.style.opacity = opacity
-      content.style.transform = `translate3d(0, ${translateY}px, 0)`
-    }
-  }, [])
 
-  useOptimizedScroll(handleScroll, [], 16)
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <section className="hero">

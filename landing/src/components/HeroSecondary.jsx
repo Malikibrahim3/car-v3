@@ -1,6 +1,8 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react'
-import { useOptimizedScroll } from '../hooks/useOptimizedScroll'
+import React, { useRef, useState, useEffect } from 'react'
 import './HeroSecondary.css'
+
+// Detect Safari browser (has poor scroll performance with JS parallax)
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
 function HeroSecondary() {
   const sectionRef = useRef(null)
@@ -8,24 +10,6 @@ function HeroSecondary() {
   const contentRef = useRef(null)
   const cardsRef = useRef(null)
   const [highlightProgress, setHighlightProgress] = useState(0)
-  
-  // Cache window dimensions
-  const windowDimensions = useRef({ width: window.innerWidth, height: window.innerHeight })
-  
-  useEffect(() => {
-    let resizeTimeout
-    const handleResize = () => {
-      clearTimeout(resizeTimeout)
-      resizeTimeout = setTimeout(() => {
-        windowDimensions.current = { width: window.innerWidth, height: window.innerHeight }
-      }, 100)
-    }
-    window.addEventListener('resize', handleResize, { passive: true })
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      clearTimeout(resizeTimeout)
-    }
-  }, [])
 
   const featureCards = [
     {
@@ -46,76 +30,116 @@ function HeroSecondary() {
     },
   ]
 
-  const handleScroll = useCallback(() => {
-    const section = sectionRef.current
-    if (!section) return
+  useEffect(() => {
+    const isMobile = window.innerWidth <= 768
+    let ticking = false
+    let lastProgress = 0
     
-    const rect = section.getBoundingClientRect()
-    const windowHeight = windowDimensions.current.height
-    const isMobile = windowDimensions.current.width <= 768
-    
-    // Only process if section is in view
-    if (rect.top >= windowHeight || rect.bottom <= 0) return
-    
-    // Background parallax
-    if (bgRef.current) {
-      const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height)
-      bgRef.current.style.transform = `translate3d(0, ${scrollProgress * 100}px, 0) scale(1.1)`
-    }
-    
-    // Cards parallax (desktop only)
-    if (cardsRef.current) {
-      if (!isMobile) {
-        const scrollProgress = Math.min(1, Math.max(0, (windowHeight - rect.top) / (windowHeight + rect.height * 0.60)))
-        const translateY = scrollProgress * -20
-        cardsRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`
+    const updateAnimations = () => {
+      const section = sectionRef.current
+      if (!section) {
+        ticking = false
+        return
       }
       
-      // Fade out cards
-      const fadeStart = -280
-      const fadeEnd = -700
-      let opacity = 1
-      if (rect.top <= fadeStart && rect.top >= fadeEnd) {
-        opacity = 1 - (fadeStart - rect.top) / (fadeStart - fadeEnd)
-      } else if (rect.top < fadeEnd) {
-        opacity = 0
-      }
-      cardsRef.current.style.opacity = Math.max(0, opacity)
-    }
-    
-    // Content fade
-    if (contentRef.current) {
-      const fadeStart = 0
-      const fadeEnd = -300
-      let opacity = 1
-      let translateY = 0
+      const rect = section.getBoundingClientRect()
+      const windowHeight = window.innerHeight
       
-      if (rect.top <= fadeStart && rect.top >= fadeEnd) {
-        opacity = 1 - (fadeStart - rect.top) / (fadeStart - fadeEnd)
-        translateY = (fadeStart - rect.top) * 0.3
-      } else if (rect.top < fadeEnd) {
-        opacity = 0
+      // Only process if section is in view
+      if (rect.top >= windowHeight || rect.bottom <= 0) {
+        ticking = false
+        return
       }
       
-      contentRef.current.style.opacity = Math.max(0, opacity)
-      contentRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`
+      // Skip parallax transforms on Safari, keep only fade effects
+      if (!isSafari) {
+        // Background parallax - GPU accelerated
+        if (bgRef.current) {
+          const scrollProgress = (windowHeight - rect.top) / (windowHeight + rect.height)
+          const parallaxY = scrollProgress * 150
+          bgRef.current.style.transform = `translate3d(0, ${parallaxY}px, 0) scale(1.15)`
+        }
+        
+        // Cards parallax (desktop only)
+        if (cardsRef.current && !isMobile) {
+          const scrollProgress = Math.min(1, Math.max(0, (windowHeight - rect.top) / (windowHeight + rect.height * 0.60)))
+          const translateY = scrollProgress * -50
+          cardsRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`
+        }
+        
+        // Content parallax
+        if (contentRef.current) {
+          const fadeStart = 0
+          const fadeEnd = -300
+          let translateY = 0
+          
+          if (rect.top <= fadeStart && rect.top >= fadeEnd) {
+            translateY = (fadeStart - rect.top) * 0.3
+          }
+          
+          contentRef.current.style.transform = `translate3d(0, ${translateY}px, 0)`
+        }
+      }
+      
+      // Fade effects work on all browsers (less expensive)
+      if (cardsRef.current) {
+        const fadeStart = -280
+        const fadeEnd = -700
+        let opacity = 1
+        if (rect.top <= fadeStart && rect.top >= fadeEnd) {
+          opacity = 1 - (fadeStart - rect.top) / (fadeStart - fadeEnd)
+        } else if (rect.top < fadeEnd) {
+          opacity = 0
+        }
+        cardsRef.current.style.opacity = Math.max(0, opacity)
+      }
+      
+      if (contentRef.current) {
+        const fadeStart = 0
+        const fadeEnd = -300
+        let opacity = 1
+        
+        if (rect.top <= fadeStart && rect.top >= fadeEnd) {
+          opacity = 1 - (fadeStart - rect.top) / (fadeStart - fadeEnd)
+        } else if (rect.top < fadeEnd) {
+          opacity = 0
+        }
+        
+        contentRef.current.style.opacity = Math.max(0, opacity)
+      }
+      
+      // Highlight progress - only update state if changed significantly
+      const startPoint = windowHeight * 0.6
+      const endPoint = windowHeight * 0.11
+      let progress = 0
+      
+      if (rect.top <= startPoint && rect.top >= endPoint) {
+        progress = (startPoint - rect.top) / (startPoint - endPoint)
+      } else if (rect.top < endPoint) {
+        progress = 1
+      }
+      
+      const newProgress = Math.min(1, Math.max(0, progress))
+      // Only update if changed by more than 1% to reduce re-renders
+      if (Math.abs(newProgress - lastProgress) > 0.01) {
+        lastProgress = newProgress
+        setHighlightProgress(newProgress)
+      }
+      
+      ticking = false
     }
-    
-    // Highlight progress
-    const startPoint = windowHeight * 0.6
-    const endPoint = windowHeight * 0.11
-    let progress = 0
-    
-    if (rect.top <= startPoint && rect.top >= endPoint) {
-      progress = (startPoint - rect.top) / (startPoint - endPoint)
-    } else if (rect.top < endPoint) {
-      progress = 1
-    }
-    
-    setHighlightProgress(Math.min(1, Math.max(0, progress)))
-  }, [])
 
-  useOptimizedScroll(handleScroll, [], 16)
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateAnimations)
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    updateAnimations() // Initial call
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const firstPassClip = Math.min(100, highlightProgress * 200)
   const secondPassClip = Math.max(0, (highlightProgress - 0.5) * 200)
