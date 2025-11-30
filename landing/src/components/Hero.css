@@ -9,7 +9,7 @@
 
 @media (max-width: 768px) {
   .hero {
-    min-height: 130vh;
+    min-height: auto;
   }
 }
 
@@ -383,7 +383,7 @@
   .hero-iphone-container {
     left: 21.25%;
     right: auto;
-    bottom: 25.25%;
+    bottom: 23.75%;
     transform: translateX(-50%);
     height: 59.28vh;
     max-height: 593px;
@@ -398,7 +398,9 @@
   }
   
   .hero {
-    min-height: 130vh;
+    height: 130vh;
+    max-height: 117vh;
+    overflow: hidden;
     align-items: flex-start;
     padding-top: 15%;
   }

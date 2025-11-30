@@ -40,6 +40,13 @@ function Navbar() {
     const onScroll = () => {
       const isMobile = window.innerWidth <= 768
       setScrolled(window.scrollY > (isMobile ? 10 : 100))
+      
+      // Also check light section
+      const pricing = pricingRef.current
+      if (pricing) {
+        const rect = pricing.getBoundingClientRect()
+        setLightSection(rect.top < 60 && rect.bottom > 0)
+      }
     }
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)

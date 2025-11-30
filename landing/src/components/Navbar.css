@@ -95,13 +95,23 @@
 }
 
 /* Orange text in light section */
-.navbar.scrolled.light-section .navbar-links a {
+.navbar.light-section .navbar-links a {
   color: #f97316;
 }
 
-.navbar.scrolled.light-section .navbar-links a:hover {
+.navbar.light-section .navbar-links a:hover {
   color: #fb923c;
   background: rgba(249, 115, 22, 0.1);
+}
+
+/* Orange download button in light section */
+.navbar.light-section .navbar-download-btn {
+  background: #f97316;
+  color: #ffffff;
+}
+
+.navbar.light-section .navbar-download-btn:hover {
+  background: #fb923c;
 }
 
 .navbar-links a {
